@@ -1,82 +1,79 @@
 # authentication-api
 ## About
-This is an API based authenticated, the base url is https://authentication-api.up.railway.app/api/
+This is an API based authentication service, you can use it with any front end project.
+It returns a json web token which you can use to validate your users.
+
+The base url is https://authentication-api.up.railway.app/api/
 
 ## Motivation
+Being a front end enthusiast, I have good skills in HTML, CSS and JavaScript and the [react.js](https://reactjs.org/) framework.
+However, these normally are not enough. I have in some circumstances wanted an authentication service for my front end clients.
+
+There are several services out there, but sadly none was simple and easy enough for me to use out of the box. Because of this I decided to write a simple but elegant authentication API.
 
 ## Framework
+The API is fully written in [Express.js](https://expressjs.com/)
 
 ## Installation
+```
+git clone https://github.com/ojokne/authentication-api.git
+```
+
+``` npm install
+```
 
 ## How to use
+The API provides two end points
+1. `/signup` to add users to the database
+2. `/login` to authenticate users and request for a json web token
 
-## License
-## Packages
-This is purely created in node js and the following packages
-https://github.com/ojokne/authentication-api/blob/d7c79bb8382641744ea77f0245185b23974a7c6a/package.json#L13-L19
+> All requests made to the endpoints should be `POST` methods
 
-## Usage
-- It provides two end points with both supporting only `POST` method.
-- `/signup` is signin up with a `username` and `password`
-- `/login` is requesting a token with a `username` and `password`. It returns a token if the `username` and `password` are verified
+The requests should always have the following
 
-Therefore, the user must be registered on the system through signing up before they can login and a token is issued
+```json
+{
+    "username":"username",
+    "password":"password"
+}
+```
 
-### Example
-##### sign up end point (`/signup`)
-The `username` and `password` are added to the database. However, the `password` is **hashed** before it is stored.
+`username` should be unique for all users.
 
-`https://authentication-api.up.railway.app//api/signup`
-##### Json data
+### Response codes
+The API appends a "Response Code" to each API Call to help tell developers what the API is doing
+
+| response_code | response_message | meaning |
+| ------------- | ---------------- | ------- |
+| 0             | Success          | For `/signup` The user was successfully created  while `/login` the user credentials where successfully verified and a token is returned as well |
+| 1             | Provide all fields | One of `username` or `password` or both fields are missing |
+| 2             | Populate all fields | One of `username` or `password` or  fields is empty|
+| 3             | User already exists | Reurned by `/ignup` when there is already a user in the database with that username |
+| 4             | Incorrect credentials | Returned by `/login` when either `username` or `password` is incorrect |
+
+## Examples
+### `/signup`
+
+```
+https://authentication-api.up.railway.app//api/signup
+```
+
+### Json data
 ```json
 {
     "username":"oen",
     "password":"0771234567"
 }
 ```
-##### Response 
-- if the account was created successfully
-
-```json
-{
-    "message": "User created successfully"
-}
+#### `/login`
 ```
-
-- If a user already exists with the `username` and `password`
-
-```json
-{
-    "message": "There is already a user with that username"
-}
+https://authentication-api.up.railway.app/api/login
 ```
-
-#### sign in endpoint (`/login`)
-`https://authentication-api.up.railway.app/api/login`
 
 ##### Json data
 ```json
 {
     "username":"oen",
     "password":"0771234567"
-}
-```
-
-##### Response
-- If the `username` and `password`
- are valid
-
-```json
-{
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9lbjQ0IiwicGFzc3dvcmQiOiIwNzcyMzA1MTU2IiwiaWF0IjoxNjY5NDY3NTkwfQ.eZqODx4wROi5NxoG6KuRoICwxsN3xoV2gYlBI8BcjNU",
-    "message": "success"
-}
-```
-
-- If the `username` and `password` are invalid
-
-```json
-{
-    "message": "Incorrect username or password"
 }
 ```
