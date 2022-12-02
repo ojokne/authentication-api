@@ -7,9 +7,26 @@ const jwt = require("jsonwebtoken");
 
 const SECRET_KEY = process.env.SECRET_KEY;
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
+
+const response_codes = {
+  ZER0: 0,
+  ONE: 1,
+  TWO: 2,
+  THREE: 3,
+  FOUR: 4,
+  FIVEL: 5,
+};
+const response_messages = {
+  ZER0: "Success",
+  ONE: "Provide all fields",
+  TWO: "Populate all fields",
+  THREE: "User already exists",
+  FOUR: "User not found",
+  FIVE: "Incorrect credentials",
+};
 router.post("/signup", async (req, res) => {
-  let message = "User created successfully";
-  let status = 200;
+  let response_code;
+  let response_message;
   if (
     req.body.hasOwnProperty("username") &&
     req.body.hasOwnProperty("password")
@@ -17,8 +34,8 @@ router.post("/signup", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     if (username.length < 1 || password.length < 1) {
-      message = "Please populate all fields";
-      status = 400;
+      response_code = response_codes.TWO;
+      response_message = response_messages.TWO;
     } else {
       let user = await models.User.findOne({
         where: {
@@ -27,25 +44,28 @@ router.post("/signup", async (req, res) => {
       });
 
       if (user) {
-        message = "There is already a user with that username";
-        status = 400;
+        response_code = response_codes.THREE;
+        response_message = response_messages.THREE;
       } else {
         let passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
         user = await models.User.create({
           username: username,
           password: passwordHash,
         });
+        response_code = response_codes.ZER0;
+        response_message = response_messages.ZER0;
       }
     }
   } else {
-    message = "Please include all fields";
+    response_code = response_codes.ONE;
+    response_message = response_messages.ONE;
   }
-  res.status(status).json({ message: message });
+  res.json({ response_code, response_message });
 });
 
 router.post("/login", async (req, res) => {
-  let message = "success";
-  let status = 200;
+  let response_code;
+  let response_message;
   let token;
   if (
     req.body.hasOwnProperty("username") &&
@@ -54,8 +74,8 @@ router.post("/login", async (req, res) => {
     const username = req.body.username.trim();
     const password = req.body.password.trim();
     if (username.length < 1 || password.length < 1) {
-      message = "Please populate all fields";
-      status = 400;
+      response_code = response_codes.TWO;
+      response_message = response_messages.TWO;
     } else {
       const user = await models.User.findOne({
         where: {
@@ -63,7 +83,7 @@ router.post("/login", async (req, res) => {
         },
       });
       if (user) {
-        let passwordVerified = bcrypt.compare(password, user.password);
+        let passwordVerified = await bcrypt.compare(password, user.password);
         if (passwordVerified) {
           try {
             token = jwt.sign(
@@ -73,18 +93,23 @@ router.post("/login", async (req, res) => {
           } catch (err) {
             console.log(err);
           }
+          response_code = response_codes.ZER0;
+          response_message = response_messages.ZER0;
         } else {
-          message = "Incorrect username or password";
+          response_code = response_codes.FIVE;
+          response_message = response_messages.FIVE;
         }
       } else {
-        message = "No record found";
+        response_code = response_codes.FOUR;
+        response_message = response_messages.FOUR;
       }
     }
   } else {
-    message = "Please include all fields";
+    response_code = response_codes.ONE;
+    response_message = response_messages.ONE;
   }
 
-  res.status(status).json({ token: token, message: message });
+  res.json({ token, response_code, response_message });
 });
 
 module.exports = router;
