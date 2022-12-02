@@ -14,15 +14,13 @@ const response_codes = {
   TWO: 2,
   THREE: 3,
   FOUR: 4,
-  FIVEL: 5,
 };
 const response_messages = {
   ZER0: "Success",
   ONE: "Provide all fields",
   TWO: "Populate all fields",
   THREE: "User already exists",
-  FOUR: "User not found",
-  FIVE: "Incorrect credentials",
+  FOUR: "Incorrect credentials",
 };
 router.post("/signup", async (req, res) => {
   let response_code;
@@ -96,8 +94,8 @@ router.post("/login", async (req, res) => {
           response_code = response_codes.ZER0;
           response_message = response_messages.ZER0;
         } else {
-          response_code = response_codes.FIVE;
-          response_message = response_messages.FIVE;
+          response_code = response_codes.FOUR;
+          response_message = response_messages.FOUR;
         }
       } else {
         response_code = response_codes.FOUR;
