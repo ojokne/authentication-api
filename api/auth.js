@@ -1,60 +1,115 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 const db = require("../db");
 const models = require("../models/model");
-
-const SECRET_KEY = process.env.SECRET_KEY;
 const jwt = require("jsonwebtoken");
 
+const SECRET_KEY = process.env.SECRET_KEY;
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
+
+const response_codes = {
+  ZER0: 0,
+  ONE: 1,
+  TWO: 2,
+  THREE: 3,
+  FOUR: 4,
+  FIVEL: 5,
+};
+const response_messages = {
+  ZER0: "Success",
+  ONE: "Provide all fields",
+  TWO: "Populate all fields",
+  THREE: "User already exists",
+  FOUR: "User not found",
+  FIVE: "Incorrect credentials",
+};
 router.post("/signup", async (req, res) => {
-  const username = req.body.username.trim();
-  const password = req.body.password.trim();
-  let message = "User created successfully";
-  let status = 200;
-
-  if (username.length < 1 || password.length < 1) {
-    message = "Please fill in all fields";
-    status = 400;
-  } else {
-    let user = await models.User.findOne({
-      where: {
-        username: username,
-      },
-    });
-
-    if (user) {
-      message = "There is already a user with that username";
-      status = 400;
+  let response_code;
+  let response_message;
+  if (
+    req.body.hasOwnProperty("username") &&
+    req.body.hasOwnProperty("password")
+  ) {
+    const username = req.body.username;
+    const password = req.body.password;
+    if (username.length < 1 || password.length < 1) {
+      response_code = response_codes.TWO;
+      response_message = response_messages.TWO;
     } else {
-      user = await models.User.create({
-        username: username,
-        password: password,
+      let user = await models.User.findOne({
+        where: {
+          username: username,
+        },
       });
+
+      if (user) {
+        response_code = response_codes.THREE;
+        response_message = response_messages.THREE;
+      } else {
+        let passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+        user = await models.User.create({
+          username: username,
+          password: passwordHash,
+        });
+        response_code = response_codes.ZER0;
+        response_message = response_messages.ZER0;
+      }
     }
+  } else {
+    response_code = response_codes.ONE;
+    response_message = response_messages.ONE;
   }
-  res.status(status).json({ message: message });
+  res.json({ response_code, response_message });
 });
 
 router.post("/login", async (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  let response_code;
+  let response_message;
   let token;
-  let message = "success";
-  const user = await models.User.findOne({
-    where: {
-      username: username,
-    },
-  });
-  if (user && user.password == password) {
-    try {
-      token = jwt.sign({ username: username, password: password }, SECRET_KEY);
-    } catch (err) {
-      console.log(err);
+  if (
+    req.body.hasOwnProperty("username") &&
+    req.body.hasOwnProperty("password")
+  ) {
+    const username = req.body.username.trim();
+    const password = req.body.password.trim();
+    if (username.length < 1 || password.length < 1) {
+      response_code = response_codes.TWO;
+      response_message = response_messages.TWO;
+    } else {
+      const user = await models.User.findOne({
+        where: {
+          username: username,
+        },
+      });
+      if (user) {
+        let passwordVerified = await bcrypt.compare(password, user.password);
+        if (passwordVerified) {
+          try {
+            token = jwt.sign(
+              { username: username, password: password },
+              SECRET_KEY
+            );
+          } catch (err) {
+            console.log(err);
+          }
+          response_code = response_codes.ZER0;
+          response_message = response_messages.ZER0;
+        } else {
+          response_code = response_codes.FIVE;
+          response_message = response_messages.FIVE;
+        }
+      } else {
+        response_code = response_codes.FOUR;
+        response_message = response_messages.FOUR;
+      }
     }
   } else {
-    message = "Incorrect username or password";
+    response_code = response_codes.ONE;
+    response_message = response_messages.ONE;
   }
-  res.status(200).json({ token: token, message: message });
+
+  res.json({ token, response_code, response_message });
 });
 
 module.exports = router;
