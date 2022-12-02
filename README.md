@@ -2,6 +2,15 @@
 ## About
 This is an API based authenticated, the base url is https://authentication-api.up.railway.app/api/
 
+## Motivation
+
+## Framework
+
+## Installation
+
+## How to use
+
+## License
 ## Packages
 This is purely created in node js and the following packages
 https://github.com/ojokne/authentication-api/blob/d7c79bb8382641744ea77f0245185b23974a7c6a/package.json#L13-L19
