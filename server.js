@@ -14,7 +14,9 @@ app.use(bodyParser.json());
 
 app.use(cors());
 app.use("/api", auth);
-
+app.get("/", (req, res) => {
+  res.json({ message: "Success, please read documentation to use this api" });
+});
 app.listen(PORT, (err) => {
   if (err) {
     console.log(err);
