@@ -1,15 +1,16 @@
 # authentication-api
 ## About
-This is an API based authentication service, you can use it with any front end project.
-It returns a json web token which you can use to validate your users.
+This repository is a partial implementation for API authetication. It should be used in a project where users require a token to use the service. 
+
+Customize the code to fit the specific requirements of the application
 
 The base url is https://authentication-api.up.railway.app/api/
 
 ## Motivation
 Being a front end enthusiast, I have good skills in HTML, CSS and JavaScript and the [react.js](https://reactjs.org/) framework.
-However, these normally are not enough. I have in some circumstances wanted an authentication service for my front end clients.
+However, these normally are not enough. I have in some circumstances wanted to implement secure API for my several front end clients.
 
-There are several services out there, but sadly none was simple and easy enough for me to use out of the box. Because of this I decided to write a simple but elegant authentication API.
+Having knowledge of [node.js](https://nodejs.org/en/), I create APIs which my front end projects make requets to, However, handling authentication becomes repetitive after several projects. Therefore I created this so that I dont have to repeat myself but just fork it and modify to the requirements of the kind of API and creating
 
 ## Framework
 The API is fully written in [Express.js](https://expressjs.com/)
@@ -19,7 +20,8 @@ The API is fully written in [Express.js](https://expressjs.com/)
 git clone https://github.com/ojokne/authentication-api.git
 ```
 
-``` npm install
+```
+npm install
 ```
 
 ## How to use
