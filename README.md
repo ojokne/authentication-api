@@ -125,3 +125,12 @@ The response if the request was successful, the user was verified therefore a to
     "response_message": "Success"
 }
 ```
+
+The response if the request was not successful, due wrong credentials
+
+```json
+{
+    "response_code": 4,
+    "response_message": "Incorrect credentials"
+}
+```
