@@ -134,3 +134,27 @@ The response if the request was not successful, due wrong credentials
     "response_message": "Incorrect credentials"
 }
 ```
+
+### Miscellaneous Responses
+
+These responses will be returned when the request data lacks a field or an empty field.
+
+They are returned for both the `/signup` and `/login` endpoints
+
+When the request data lacks a field or two. Solved by providing both username and password
+
+```json
+{
+    "response_code": 1,
+    "response_message": "Provide all fields"
+}
+```
+
+When the request data has an empty field. Solved by adding data to the field(s)
+
+```json
+{
+    "response_code": 2,
+    "response_message": "Populate all fields"
+}
+```
