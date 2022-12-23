@@ -57,7 +57,7 @@ The API appends a "Response Code" to each API Call to help tell developers what 
 ### `/signup`
 
 ```
-https://authentication-api.up.railway.app//api/signup
+https://authentication-api.up.railway.app/api/signup
 ```
 
 ### Json data
