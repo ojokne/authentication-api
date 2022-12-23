@@ -64,7 +64,7 @@ The API appends a "Response Code" to each API Call to help tell developers what 
 
 ## Examples
 
- `/signup`
+### `/signup`
 
 ```
 https://authentication-api.up.railway.app/api/signup
@@ -79,7 +79,7 @@ https://authentication-api.up.railway.app/api/signup
 }
 ```
 
-### Response
+#### Response
 
 The response if the request was successful and the account has been created
 
@@ -99,7 +99,7 @@ The response a user already exists with that username
 }
 ```
 
- `/login`
+ ### `/login`
  
 ```
 https://authentication-api.up.railway.app/api/login
@@ -114,7 +114,7 @@ Json data
 }
 ```
 
-### Response
+#### Response
 
 The response if the request was successful, the user was verified therefore a token is returned
 
