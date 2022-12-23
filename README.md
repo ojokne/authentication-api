@@ -67,6 +67,14 @@ https://authentication-api.up.railway.app/api/signup
     "password":"0771234567"
 }
 ```
+
+### Response
+```json
+{
+    "response_code": 0,
+    "response_message": "Success"
+}
+```
 #### `/login`
 ```
 https://authentication-api.up.railway.app/api/login
