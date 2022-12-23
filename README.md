@@ -54,13 +54,13 @@ The API appends a "Response Code" to each API Call to help tell developers what 
 | 4             | Incorrect credentials | Returned by `/login` when either `username` or `password` is incorrect |
 
 ## Examples
-### `/signup`
+ `/signup`
 
 ```
 https://authentication-api.up.railway.app/api/signup
 ```
 
-### Json data
+ Json data
 ```json
 {
     "username":"oen",
@@ -69,18 +69,19 @@ https://authentication-api.up.railway.app/api/signup
 ```
 
 ### Response
+The response if the request was successful and the account has been created
 ```json
 {
     "response_code": 0,
     "response_message": "Success"
 }
 ```
-#### `/login`
+ `/login`
 ```
 https://authentication-api.up.railway.app/api/login
 ```
 
-##### Json data
+Json data
 ```json
 {
     "username":"oen",
