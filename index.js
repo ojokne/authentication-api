@@ -12,7 +12,11 @@ const PORT = process.env.PORT || 5000;
 // middleware
 app.use(bodyParser.json());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 app.use("/api", auth);
 app.get("/", (req, res) => {
   res.json({ message: "Success, please read documentation to use this api" });
