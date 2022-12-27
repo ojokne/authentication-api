@@ -6,7 +6,6 @@ This repository is a partial implementation for API authetication. It should be 
 
 Customize the code to fit the specific requirements of the application
 
-The base url is https://authentication-api.up.railway.app/api/
 
 ## Motivation
 
@@ -28,6 +27,12 @@ git clone https://github.com/ojokne/authentication-api.git
 ```
 npm install
 ```
+
+## Then run the project
+```
+npm start
+```
+
 
 ## How to use
 
@@ -67,7 +72,7 @@ The API appends a "Response Code" to each API Call to help tell developers what 
 ### `/signup`
 
 ```
-https://authentication-api.up.railway.app/api/signup
+http://localhost:5000/api/signup
 ```
 
  Json data
@@ -102,7 +107,7 @@ The response a user already exists with that username
  ### `/login`
  
 ```
-https://authentication-api.up.railway.app/api/login
+http://localhost:5000/api/login
 ```
 
 Json data
