@@ -11,6 +11,7 @@ const app = express.Router();
 app.post("/signup", async (req, res) => {
   let response_code;
   let response_message;
+  let user;
   if (
     req.body.hasOwnProperty("username") &&
     req.body.hasOwnProperty("password")
@@ -21,21 +22,25 @@ app.post("/signup", async (req, res) => {
       response_code = response_codes.TWO;
       response_message = response_messages.TWO;
     } else {
-      let user = await models.User.findOne({
+      let userReturned = await models.User.findOne({
         where: {
           username: username,
         },
       });
 
-      if (user) {
+      if (userReturned) {
         response_code = response_codes.THREE;
         response_message = response_messages.THREE;
       } else {
         let passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-        user = await models.User.create({
+        userCreated = await models.User.create({
           username: username,
           password: passwordHash,
         });
+        user = {
+          id: userCreated.id,
+          username: userCreated.username,
+        };
         response_code = response_codes.ZER0;
         response_message = response_messages.ZER0;
       }
@@ -44,7 +49,7 @@ app.post("/signup", async (req, res) => {
     response_code = response_codes.ONE;
     response_message = response_messages.ONE;
   }
-  res.json({ response_code, response_message });
+  res.json({ response_code, response_message, user });
 });
 
 module.exports = app;

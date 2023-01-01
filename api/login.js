@@ -13,6 +13,7 @@ app.post("/login", async (req, res) => {
   let response_code;
   let response_message;
   let token;
+  let user;
   if (
     req.body.hasOwnProperty("username") &&
     req.body.hasOwnProperty("password")
@@ -23,13 +24,16 @@ app.post("/login", async (req, res) => {
       response_code = response_codes.TWO;
       response_message = response_messages.TWO;
     } else {
-      const user = await models.User.findOne({
+      const userReturned = await models.User.findOne({
         where: {
           username: username,
         },
       });
-      if (user) {
-        let passwordVerified = await bcrypt.compare(password, user.password);
+      if (userReturned) {
+        let passwordVerified = await bcrypt.compare(
+          password,
+          userReturned.password
+        );
         if (passwordVerified) {
           try {
             token = jwt.sign(
@@ -39,6 +43,10 @@ app.post("/login", async (req, res) => {
           } catch (err) {
             console.log(err);
           }
+          user = {
+            id: userReturned.id,
+            username: userReturned.username,
+          };
           response_code = response_codes.ZER0;
           response_message = response_messages.ZER0;
         } else {
@@ -55,7 +63,7 @@ app.post("/login", async (req, res) => {
     response_message = response_messages.ONE;
   }
 
-  res.json({ token, response_code, response_message });
+  res.json({ token, response_code, response_message, user });
 });
 
 module.exports = app;
