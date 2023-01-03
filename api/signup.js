@@ -32,11 +32,19 @@ app.post("/signup", async (req, res) => {
         response_code = response_codes.THREE;
         response_message = response_messages.THREE;
       } else {
+        let resetCode = ''
+        for (let i = 0; i < 5; i++) {
+          code = parseInt((Math.random()*1e16)%10)
+          resetCode +=code
+          console.log(code);
+        }
         let passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
         userCreated = await models.User.create({
           username: username,
           password: passwordHash,
+          resetCode: resetCode
         });
+        console.log(resetCode);
         user = {
           id: userCreated.id,
           username: userCreated.username,
