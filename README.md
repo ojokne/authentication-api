@@ -91,7 +91,12 @@ The response if the request was successful and the account has been created
 ```json
 {
     "response_code": 0,
-    "response_message": "Success"
+    "response_message": "Success",
+    "user": {
+        "id": 3,
+        "username": "oen33",
+        "verified": false
+    }
 }
 ```
 
@@ -125,9 +130,14 @@ The response if the request was successful, the user was verified therefore a to
 
 ```json
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9lbiIsInBhc3N3b3JkIjoiMDc3MTIzNDU2NyIsImlhdCI6MTY3MTc5MDIyNX0.01LMkW9pzyn5kMngL98HsqCiE4zKPzL5th4SrPAHRCs",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9lbmgyIiwicGFzc3dvcmQiOiIwNzcxMjM0NTYiLCJpYXQiOjE2NzI3NzM0MDF9.nMWJLC18Ya8LW3wnJ6xys0W1UenF_EEl9AUIFxLxeaU",
     "response_code": 0,
-    "response_message": "Success"
+    "response_message": "Success",
+    "user": {
+        "id": 2,
+        "username": "oenh2",
+        "verified": false
+    }
 }
 ```
 
