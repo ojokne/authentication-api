@@ -48,6 +48,7 @@ app.post("/signup", async (req, res) => {
         user = {
           id: userCreated.id,
           username: userCreated.username,
+          verified: userCreated.verified
         };
         response_code = response_codes.ZER0;
         response_message = response_messages.ZER0;

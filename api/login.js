@@ -46,6 +46,7 @@ app.post("/login", async (req, res) => {
           user = {
             id: userReturned.id,
             username: userReturned.username,
+            verified: userReturned.verified
           };
           response_code = response_codes.ZER0;
           response_message = response_messages.ZER0;
