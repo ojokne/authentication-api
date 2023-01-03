@@ -13,6 +13,10 @@ const User = db.sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    verified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue:false,
+    },
     resetCode: {
       type: DataTypes.STRING,
       allowNull: true,
