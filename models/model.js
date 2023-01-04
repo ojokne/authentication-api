@@ -17,7 +17,7 @@ const User = db.sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue:false,
     },
-    resetCode: {
+    code: {
       type: DataTypes.STRING,
       allowNull: true,
     },
