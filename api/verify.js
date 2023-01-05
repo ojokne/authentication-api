@@ -27,16 +27,22 @@ app.post("/verify", async (req, res) => {
       });
 
         if (userReturned) {
-            if (code == userReturned.code) {
-                userReturned.verified = true
-                userReturned.save()
-                response_code = response_codes.ZER0;
-                response_message = response_messages.ZER0;
-                user = {
-                  id: userReturned.id,
-                  username: userReturned.username,
-                  verified: userReturned.verified,
-                };
+          if (code == userReturned.code) {
+            if (userReturned.verified) {
+                response_code = 5;
+                response_message = "User is already verified";
+            } else {
+              
+              userReturned.verified = true
+              userReturned.save()
+              response_code = response_codes.ZER0;
+              response_message = response_messages.ZER0;
+              user = {
+                id: userReturned.id,
+                username: userReturned.username,
+                verified: userReturned.verified,
+              };
+            }
             } else {
                response_code = response_codes.FOUR;
                response_message = response_messages.FOUR; 
