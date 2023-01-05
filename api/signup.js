@@ -61,11 +61,11 @@ app.post("/signup", async (req, res) => {
           },
         });
         let info = await transporter.sendMail({
-          from: "ojokne@gmail.com",
+          from: process.env.ADMIN_EMAIL,
           to: userCreated.email,
           subject: "verification code",
-          text:userCreated.code
-        })
+          text: userCreated.code,
+        });
         console.log(`Message sent ${info.messageId}`);
         response_code = response_codes.ZER0;
         response_message = response_messages.ZER0;
