@@ -11,18 +11,18 @@ app.post("/verify", async (req, res) => {
     let response_message;
     let user
   if (
-    req.body.hasOwnProperty("username") &&
+    req.body.hasOwnProperty("email") &&
     req.body.hasOwnProperty("code")
   ) {
-      const username = req.body.username.trim();
+      const email = req.body.email.trim();
       const code = req.body.code.trim()
-    if (username.length < 1|| (code.length<1))   {
+    if (email.length < 1|| (code.length<1))   {
       response_code = response_codes.TWO;
       response_message = response_messages.TWO;
     } else {
       let userReturned = await models.User.findOne({
         where: {
-          username: username,
+          email: email,
         },
       });
 
@@ -39,7 +39,7 @@ app.post("/verify", async (req, res) => {
               response_message = response_messages.ZER0;
               user = {
                 id: userReturned.id,
-                username: userReturned.username,
+                email: userReturned.email,
                 verified: userReturned.verified,
               };
             }

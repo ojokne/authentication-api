@@ -15,18 +15,18 @@ app.post("/login", async (req, res) => {
   let token;
   let user;
   if (
-    req.body.hasOwnProperty("username") &&
+    req.body.hasOwnProperty("email") &&
     req.body.hasOwnProperty("password")
   ) {
-    const username = req.body.username.trim();
+    const email = req.body.email.trim();
     const password = req.body.password.trim();
-    if (username.length < 1 || password.length < 1) {
+    if (email.length < 1 || password.length < 1) {
       response_code = response_codes.TWO;
       response_message = response_messages.TWO;
     } else {
       const userReturned = await models.User.findOne({
         where: {
-          username: username,
+          email: email,
         },
       });
       if (userReturned) {
@@ -37,7 +37,7 @@ app.post("/login", async (req, res) => {
         if (passwordVerified) {
           try {
             token = jwt.sign(
-              { username: username, password: password },
+              { email: email, password: password },
               SECRET_KEY
             );
           } catch (err) {
@@ -45,7 +45,7 @@ app.post("/login", async (req, res) => {
           }
           user = {
             id: userReturned.id,
-            username: userReturned.username,
+            email: userReturned.email,
             verified: userReturned.verified
           };
           response_code = response_codes.ZER0;

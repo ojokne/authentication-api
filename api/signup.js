@@ -15,18 +15,18 @@ app.post("/signup", async (req, res) => {
   let response_message;
   let user;
   if (
-    req.body.hasOwnProperty("username") &&
+    req.body.hasOwnProperty("email") &&
     req.body.hasOwnProperty("password")
   ) {
-    const username = req.body.username;
+    const email = req.body.email;
     const password = req.body.password;
-    if (username.length < 1 || password.length < 1) {
+    if (email.length < 1 || password.length < 1) {
       response_code = response_codes.TWO;
       response_message = response_messages.TWO;
     } else {
       let userReturned = await models.User.findOne({
         where: {
-          username: username,
+          email: email,
         },
       });
 
@@ -41,13 +41,13 @@ app.post("/signup", async (req, res) => {
         }
         let passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
         userCreated = await models.User.create({
-          username: username,
+          email: email,
           password: passwordHash,
           code: code
         });
         user = {
           id: userCreated.id,
-          username: userCreated.username,
+          email: userCreated.email,
           verified: userCreated.verified
         };
           //  code to send email
@@ -62,7 +62,7 @@ app.post("/signup", async (req, res) => {
         });
         let info = await transporter.sendMail({
           from: "ojokne@gmail.com",
-          to: userCreated.username,
+          to: userCreated.email,
           subject: "verification code",
           text:userCreated.code
         })
