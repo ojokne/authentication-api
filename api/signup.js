@@ -1,5 +1,7 @@
+require('dotenv').config()
 const express = require("express");
 const bcrypt = require("bcrypt");
+const nodemailer = require('nodemailer')
 const db = require("../db");
 const models = require("../models/model");
 const { response_codes, response_messages } = require("./response");
@@ -48,6 +50,23 @@ app.post("/signup", async (req, res) => {
           username: userCreated.username,
           verified: userCreated.verified
         };
+          //  code to send email
+        let transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          port: 465,
+          secure: true, // true for 465, false for other ports
+          auth: {
+            user: process.env.ADMIN_EMAIL, 
+            pass: process.env.APP_PASSWORD,
+          },
+        });
+        let info = await transporter.sendMail({
+          from: "ojokne@gmail.com",
+          to: userCreated.username,
+          subject: "verification code",
+          text:userCreated.code
+        })
+        console.log(`Message sent ${info.messageId}`);
         response_code = response_codes.ZER0;
         response_message = response_messages.ZER0;
       }
