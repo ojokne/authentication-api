@@ -32,7 +32,6 @@ app.post("/verify", async (req, res) => {
                 response_code = 5;
                 response_message = "User is already verified";
             } else {
-              
               userReturned.verified = true
               userReturned.save()
               response_code = response_codes.ZER0;
