@@ -1,5 +1,4 @@
 const express = require("express");
-const db = require("../db");
 const models = require("../models/model");
 const { response_codes, response_messages } = require("./response");
 
