@@ -1,12 +1,9 @@
 require("dotenv").config();
 const express = require("express");
-const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const db = require("../db");
 const models = require("../models/model");
 const { response_codes, response_messages } = require("./response");
-
-const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
 
 const app = express.Router();
 
